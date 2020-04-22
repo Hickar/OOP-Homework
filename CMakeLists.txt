@@ -3,4 +3,4 @@ project(Practice_OOP)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(Practive_OOP ex_1.2.1/ex_1.2.1.cpp)
+add_executable(Practive_OOP ex_1.2.4/ex_1.2.4.cpp)
