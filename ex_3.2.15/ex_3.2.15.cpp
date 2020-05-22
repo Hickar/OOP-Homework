@@ -30,13 +30,13 @@
             max = целочисленное значение в десятеричном формате
  */
 
-bool isNumber(std::string &number) {
-    bool isNumber = false;
+bool isNumber(std::string &str) {
+    bool isNumber = true;
     try {
-        stoi(number);
-        isNumber = true;
+        stoi(str);
     } catch (std::exception &e) {
-        std::cerr << e.what() << std::endl;
+        isNumber = false;
+        throw std::string("Это не число: " + str);
     }
     return isNumber;
 }
@@ -53,7 +53,7 @@ int* split(const std::string &str, int arraySize, const char delimiter) {
         }
     }
     if (partIndex != arraySize) {
-        throw "Не совпадает ранее указанный размер массива с его фактическим";
+        throw std::string("Не совпадает ранее указанный размер массива с его фактическим");
     }
     return tokens;
 }
@@ -77,15 +77,18 @@ private:
 class TypeTwo {
 public:
     TypeTwo(){};
-    void setNumbers(int fNumber, int sNumber) {
-        firstNumber = fNumber;
-        secondNumber = sNumber;
+
+    void setNumbers(std::string &input) {
+        int* numbers = new int[2];
+        numbers = split(input, 2, ' ');
+        this->fNumber = numbers[0];
+        this->sNumber = numbers[1];
     }
 
     friend void compareNumbersOfTwoObjects(TypeOne fObject, TypeTwo sObj);
 
 private:
-    int firstNumber, secondNumber;
+    int fNumber, sNumber;
 };
 
 
@@ -102,23 +105,24 @@ int max(int numbers[], int arraySize) {
 void compareNumbersOfTwoObjects(TypeOne fObject, TypeTwo sObject) {
     int numsArray[3];
     numsArray[0] = fObject.number;
-    numsArray[1] = sObject.firstNumber;
-    numsArray[2] = sObject.secondNumber;
-    printf("max = %i", max(numsArray, 3));
+    numsArray[1] = sObject.fNumber;
+    numsArray[2] = sObject.sNumber;
+    std::cout << "max = " << max(numsArray, 3);
 }
 
 int main() {
     std::string input;
-    getline(std::cin, input);
     TypeOne firstObject;
+    TypeTwo secondObject;
+
+    getline(std::cin, input);
     if (isNumber(input)) {
         firstObject.setNumber(stoi(input));
     }
 
     getline(std::cin, input);
-    int* secondObjectNumbers = split(input, 2, ' ');
-    TypeTwo secondObject;
-    secondObject.setNumbers(secondObjectNumbers[0], secondObjectNumbers[1]);
+    secondObject.setNumbers(input);
+
     compareNumbersOfTwoObjects(firstObject, secondObject);
 
     return 0;

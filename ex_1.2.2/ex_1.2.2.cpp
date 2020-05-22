@@ -1,6 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <iomanip>
 
 /* Создать объект, который обрабатывает массив целых чисел не более 10 элементов.
  * Количество элементов определяется в момент конструирования объекта.
@@ -28,13 +29,13 @@
  *      целочисленные значения элементов массива, каждое значение занимает 5 позиций.
  */
 
-bool isNumber(std::string number) {
-    bool isNumber = false;
+bool isNumber(std::string &str) {
+    bool isNumber = true;
     try {
-        stoi(number);
-        isNumber = true;
+        stoi(str);
     } catch (std::exception &e) {
-        std::cerr << e.what() << std::endl;
+        isNumber = false;
+        throw std::string("Это не число: " + str);
     }
     return isNumber;
 }
@@ -45,11 +46,13 @@ int* split(const std::string &str, int arraySize, const char delimiter) {
     std::string token;
     std::istringstream tokenStream(str);
     while(getline(tokenStream, token, delimiter)) {
-        tokens[partIndex] = stoi(token);
-        partIndex++;
+        if (isNumber(token)) {
+            tokens[partIndex] = stoi(token);
+            partIndex++;
+        }
     }
     if (partIndex != arraySize) {
-        throw "Не совпадает ранее указанный размер массива с его фактическим";
+        throw std::string("Не совпадает ранее указанный размер массива с его фактическим");
     }
     return tokens;
 }
@@ -88,30 +91,15 @@ private:
 
     void printArray() {
         for (int i = 0; i < arraySize; i++) {
-            int spacesCount = 5 - digitsCount(array[i]);
-            printf("%i", array[i]);
-            for (int i = 0; i < spacesCount; i++) {
-                printf(" ");
-            }
+            std::cout << std::setw(5) << array[i];
         }
-        printf("\n");
-    }
-
-    int digitsCount(int num) {
-        int digitsCount = 0;
-        while (true) {
-            num /= 10;
-            digitsCount++;
-            if (num == 0) break;
-        }
-        return digitsCount;
     }
 };
 
 int main() {
     try {
         ArrayReversingObject arrayReverser;
-    } catch (const char *msg) {
-        std::cerr << msg << std::endl;
+    } catch (const std::string *msg) {
+        std::cerr << msg;
     }
 }

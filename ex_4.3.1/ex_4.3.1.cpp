@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <iomanip>
 
 /*
     Создать базовый класс, содержащий только свойства. На его базе создать производный класс 1 и производный класс 2,
@@ -92,25 +93,10 @@ public:
         }
     }
 
-    int digitsCount(int num) {
-        int digitsCount = 0;
-        while (true) {
-            num /= 10;
-            digitsCount++;
-            if (num == 0) break;
-        }
-        return digitsCount;
-    }
-
     void printArray(int* array, int arraySize) {
         for (int i = 0; i < arraySize; i++) {
-            int spacesCount = 5 - digitsCount(array[i]);
-            printf("%i", array[i]);
-            for (int i = 0; i < spacesCount; i++) {
-                printf(" ");
-            }
+            std::cout << std::setw(5) << array[i];
         }
-        printf("\n");
     }
 };
 
@@ -118,13 +104,13 @@ class SubClassThree : public SubClassOne, public SubClassTwo {
 public:
     SubClassThree() {
         SubClassOne::createArray();
-        printf("Array dimension: %i\n", SubClassOne::arraySize);
-        printf("The original array: ");
+        std::cout << "Array dimension: " << SubClassOne::arraySize << std::endl;
+        std::cout << "The original array: ";
         SubClassTwo::printArray(SubClassOne::array, SubClassOne::arraySize);
 
         SubClassTwo::quickSortArray(SubClassOne::array, 0, SubClassOne::arraySize - 1);
 
-        printf("An ordered array: ");
+        std::cout << "An ordered array: ";
         SubClassTwo::printArray(SubClassOne::array, SubClassOne::arraySize);
     };
     ~SubClassThree() = default;

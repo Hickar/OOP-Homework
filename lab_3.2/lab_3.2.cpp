@@ -115,7 +115,6 @@
 
 std::vector<std::string> split(const std::string &str, const char delimiter) {
     std::vector<std::string> tokens;
-    int currentIndex = 0;
     std::string token;
     std::istringstream tokenStream(str);
     while(getline(tokenStream, token, delimiter)) {

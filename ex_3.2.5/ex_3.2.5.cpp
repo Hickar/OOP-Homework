@@ -9,6 +9,7 @@ bool isNumber(std::string &str) {
         stoi(str);
     } catch (std::exception &e) {
         isNumber = false;
+        throw std::string("Это не число: " + str);
     }
     return isNumber;
 }
@@ -23,7 +24,7 @@ struct Token {
         } else if (value == "+" || value == "-" || value == "*" || value == "%") {
             type = "operator";
         } else {
-            throw "Неправильные аргументы!";
+            throw std::string("Неправильные аргументы!");
         }
     }
 };
@@ -91,8 +92,8 @@ int main() {
             expressionItems = split(input, ' ');
             calc.calculate(expressionItems);
         }
-    } catch (const char *msg) {
-        std::cerr << msg << std::endl;
+    } catch (const std::string *msg) {
+        std::cerr << msg;
     }
 
     return 0;

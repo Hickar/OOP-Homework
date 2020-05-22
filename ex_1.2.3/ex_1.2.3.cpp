@@ -1,8 +1,6 @@
 #include <iostream>
 #include <string>
 
-using namespace std;
-
 /* Создать объект, который обрабатывает переменную целого типа максимальной длины.
  * У объекта есть закрытое свойство n целого типа максимальной длины.
  * Объект обладает следующей функциональностью:
@@ -30,31 +28,30 @@ using namespace std;
 class DigitsCounter {
 public:
     DigitsCounter() {
-       getline(cin, input);
-       n = stol(input);
+        std::string input;
+        getline(std::cin, input);
+        this->n = stol(input);
+        this->printResults();
     }
 
-    void countDigits() {
-        long int temp = n;
-        while (n != 0) {
-            n /= 10;
+    int countDigits(long int number) {
+        int N = 0;
+        do {
+            number /= 10;
             N++;
-        }
-        n = temp;
+        } while (number != 0);
+        return N;
     }
 
     void printResults() {
-        printf("n = %li\nN = %i", n, N);
+        std::cout << "n = " << n << std::endl;
+        std::cout << "N = " << this->countDigits(this->n);
     }
 
 private:
-    string input;
     long int n;
-    int N = 0;
 };
 
 int main() {
     DigitsCounter someObject;
-    someObject.countDigits();
-    someObject.printResults();
 }
